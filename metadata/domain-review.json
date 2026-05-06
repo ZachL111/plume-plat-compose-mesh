@@ -1,0 +1,73 @@
+{
+  "repo": "plume-plat-compose-mesh",
+  "language": "Java",
+  "category": "Platform engineering",
+  "goal": "Package a Java local lab for compose analysis with node-edge fixtures, cycle and reachability reports, and documented operating limits.",
+  "review_model": {
+    "terms": [
+      "rollout width",
+      "quota pressure",
+      "route drift",
+      "secret scope"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "rollout width",
+      "signal": 78,
+      "slack": 33,
+      "drag": 11,
+      "confidence": 67,
+      "score": 223,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "quota pressure",
+      "signal": 68,
+      "slack": 36,
+      "drag": 27,
+      "confidence": 50,
+      "score": 141,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "route drift",
+      "signal": 54,
+      "slack": 40,
+      "drag": 9,
+      "confidence": 46,
+      "score": 167,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "secret scope",
+      "signal": 55,
+      "slack": 36,
+      "drag": 9,
+      "confidence": 57,
+      "score": 176,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "rollout width",
+      "signal": 78,
+      "slack": 38,
+      "drag": 19,
+      "confidence": 48,
+      "score": 185,
+      "lane": "ship"
+    }
+  ]
+}

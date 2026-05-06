@@ -1,68 +1,40 @@
 # plume-plat-compose-mesh
 
-`plume-plat-compose-mesh` is a focused Java codebase around package a Java local lab for compose analysis with node-edge fixtures, cycle and reachability reports, and documented operating limits. It is meant to be easy to inspect, run, and extend without a hosted service.
+`plume-plat-compose-mesh` explores platform engineering with a small Java codebase and local fixtures. The technical goal is to package a Java local lab for compose analysis with node-edge fixtures, cycle and reachability reports, and documented operating limits.
 
-## Plume Plat Compose Mesh Walkthrough
+## Why I Keep It Small
 
-I would read the project from the outside in: command, fixture, model, then roadmap. That keeps the platform engineering idea grounded in files that can be checked locally.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how rollout width and route drift should influence a review result.
 
-## Reason For The Project
+## Plume Plat Compose Mesh Review Notes
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+For a quick review, compare `rollout width` with `quota pressure` before reading the middle cases.
 
-## How It Is Put Together
+## Included Behavior
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The Java implementation uses a compact package layout and direct assertion checks.
+- `fixtures/domain_review.csv` adds cases for rollout width and quota pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/plume-plat-compose-walkthrough.md` walks through the case spread.
+- The Java code includes a review path for `rollout width` and `quota pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Data Notes
+## Internal Model
 
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Capabilities
+The Java implementation avoids hidden state so fixture changes are easy to reason about.
 
-- Uses fixture data to keep route policy changes visible in code review.
-- Includes extended examples for rollout constraints, including `surge` and `degraded`.
-- Documents environment checks tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-
-## Getting It Running
-
-The only required setup is the local Java toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Check The Work
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Where Things Live
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Tradeoffs
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Possible Extensions
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more platform engineering fixture that focuses on a malformed or borderline input.
-
-## Command Examples
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Validation
+
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
+
+## Scope
+
+No external service is required. A deeper version would add more negative cases and a clearer boundary around invalid input.
